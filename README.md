@@ -6,7 +6,7 @@ A local-only research system that turns a walk-forward EUR/USD return forecast i
 
 ## Why this project is cautious
 
-The portfolio's earlier Forex Prediction Engine (Project 09) evaluated 2,764 pooled out-of-sample EUR/USD forecasts per model. Its zero-change baseline had 34.274 bp MAE, compared with 34.355 bp for gradient boosting and 35.579 bp for a GRU; neither supervised model beat the baseline. This trader therefore treats the predictor as an unproven research signal, includes a no-trade baseline, requires a forecast to clear modeled costs plus an edge buffer, caps gross leverage at 1x, and defaults to a 0.25% per-trade stress-risk budget.
+The portfolio's earlier [Forex Prediction Engine (Project 09)](https://github.com/bereket-web/forex-prediction-engine) evaluated 2,827 pooled out-of-sample EUR/USD forecasts per model across five expanding chronological folds. Its zero-change baseline had 34.220 bp MAE, compared with 34.338 bp for gradient boosting and 35.441 bp for a GRU; neither supervised model beat the baseline. This trader therefore treats the predictor as an unproven research signal, includes a no-trade baseline, requires a forecast to clear modeled costs plus an edge buffer, caps gross leverage at 1x, and defaults to a 0.25% per-trade stress-risk budget.
 
 ## What it demonstrates
 
@@ -67,14 +67,14 @@ The engine reports total return, maximum drawdown, daily volatility, a descripti
 
 ### First full-history replay
 
-Using the cached FRED snapshot from 1999-01-04 through 2026-10-23 with default settings, the walk-forward simulation closed 1,160 paper trades, then latched its 5% drawdown breaker on 2006-10-10. The close-only loss crossed the trigger to a 5.07% peak drawdown before the close-based check could stop further entries; no trades were opened after that date. Virtual equity ended at $10,071.58 from $10,000 (+0.72%), with a 1.012 profit factor, 0.03 descriptive Sharpe ratio, and $393.95 of assumed costs. This is a weak, assumption-sensitive historical result—not evidence of an edge or future profitability. Source rates are reference closes, and no real broker prices or trades were involved.
+Using the refreshed FRED snapshot of 6,979 valid observations from 1999-01-04 through 2026-10-30 with default settings, the walk-forward simulation closed 1,160 paper trades, then latched its 5% drawdown breaker on 2006-10-10. The close-only loss crossed the trigger to a 5.07% peak drawdown before the close-based check could stop further entries; no trades were opened after that date. Virtual equity ended at $10,071.58 from $10,000 (+0.72%), with a 1.012 profit factor, 0.03 descriptive Sharpe ratio, and $393.95 of assumed costs. This is a weak, assumption-sensitive historical result—not evidence of an edge or future profitability. Source rates are reference closes, and no real broker prices or trades were involved.
 
 A historical run uses the full date range and past-only model fits; do not tune thresholds against the same reported period and present the result as independent validation. For stronger research, freeze the strategy first and reserve a later untouched period; compare against no-trade and buy-and-hold with uncertainty estimates; stress test varying spreads, slippage and gaps; and use legally reusable bid/ask market data before drawing any execution conclusions.
 
 ## Data provenance
 
 - [FRED DEXUSEU: U.S. dollars to one euro](https://fred.stlouisfed.org/series/DEXUSEU), sourced from the Federal Reserve Board's H.10 release. The public series page warns that graph data are copyrighted; consult its current terms before redistributing observations or row-level derivatives. Downloaded observations are cached under `data/cache/` and excluded from version control.
-- The research context and prior forecast findings are documented in the adjacent [Forex Prediction Engine](../forex-prediction-engine/README.md). This project does not redistribute that source series or its row-level forecasts.
+- The research context and prior forecast findings are documented in the public [Forex Prediction Engine repository](https://github.com/bereket-web/forex-prediction-engine). This project does not redistribute that source series or its row-level forecasts.
 
 ## Architecture
 
