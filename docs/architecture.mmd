@@ -1,5 +1,5 @@
 flowchart TB
-    A[Public FRED DEXUSEU CSV<br/>or local date/close CSV] --> B[Validate, cache, normalize]
+    A[Public ECB EXR.D.USD.EUR.SP00.A CSV<br/>or local date/close CSV] --> B[Validate, cache, normalize]
     B --> C[Causal daily features]
     C --> D[Walk-forward forecaster<br/>HistGradientBoosting / zero baseline]
     D --> E[Cost-aware strategy<br/>long / short / no trade]

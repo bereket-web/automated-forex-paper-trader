@@ -312,7 +312,7 @@ def calculate_metrics(
     start = float(values.iloc[0]) if not values.empty else config.initial_cash
     ending = float(values.iloc[-1]) if not values.empty else config.initial_cash
     return {
-        "instrument": "EUR/USD reference rate (FRED DEXUSEU; USD per EUR)",
+        "instrument": "EUR/USD reference rate (ECB EXR.D.USD.EUR.SP00.A; USD per EUR)",
         "model": forecaster.model_kind,
         "period_start": str(equity["date"].iloc[0]) if not equity.empty else None,
         "period_end": str(equity["date"].iloc[-1]) if not equity.empty else None,

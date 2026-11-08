@@ -8,24 +8,24 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from fx_paper.dashboard import generate_dashboard
-from fx_paper.data import fetch_fred_reference_rate, load_reference_csv
+from fx_paper.data import fetch_ecb_reference_rate, load_reference_csv
 from fx_paper.engine import PaperConfig, run_paper_simulation
 from fx_paper.model import WalkForwardForecaster
 from fx_paper.risk import RiskConfig
 
-DEFAULT_CACHE = Path("data/cache/DEXUSEU.csv")
+DEFAULT_CACHE = Path("data/cache/ECB_EXR_D_USD_EUR_SP00_A.csv")
 
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="fx-paper", description="Broker-free EUR/USD paper-trading research simulator")
     commands = parser.add_subparsers(dest="command", required=True)
-    ingest = commands.add_parser("ingest", help="download or refresh public FRED DEXUSEU daily closes")
+    ingest = commands.add_parser("ingest", help="download or refresh ECB EXR.D.USD.EUR.SP00.A daily closes")
     ingest.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
     ingest.add_argument("--refresh", action="store_true")
 
     simulate = commands.add_parser("simulate", aliases=["paper"], help="run a walk-forward local paper simulation")
-    simulate.add_argument("--data", type=Path, default=DEFAULT_CACHE, help="date/close CSV; defaults to the public FRED cache")
-    simulate.add_argument("--refresh", action="store_true", help="refresh FRED only when using the default cache")
+    simulate.add_argument("--data", type=Path, default=DEFAULT_CACHE, help="date/close CSV; defaults to the ECB USD-per-EUR cache")
+    simulate.add_argument("--refresh", action="store_true", help="refresh ECB only when using the default cache")
     simulate.add_argument("--model", choices=("histgb", "zero"), default="histgb")
     simulate.add_argument("--min-train", type=int, default=300)
     simulate.add_argument("--lookback", type=int, default=1500)
@@ -47,13 +47,13 @@ def _parser() -> argparse.ArgumentParser:
 def main() -> None:
     args = _parser().parse_args()
     if args.command == "ingest":
-        data = fetch_fred_reference_rate(args.cache, refresh=args.refresh)
+        data = fetch_ecb_reference_rate(args.cache, refresh=args.refresh)
         print(json.dumps({"rows": len(data), "start": str(data.index.min().date()), "end": str(data.index.max().date()), "cache": str(args.cache)}, indent=2))
-        print("Source: FRED DEXUSEU daily reference rate; not executable bid/ask data.")
+        print("Source: ECB EXR.D.USD.EUR.SP00.A daily USD-per-EUR reference rate; not executable bid/ask data.")
         return
 
     if args.data == DEFAULT_CACHE:
-        prices = fetch_fred_reference_rate(args.data, refresh=args.refresh)
+        prices = fetch_ecb_reference_rate(args.data, refresh=args.refresh)
     else:
         if not args.data.exists():
             raise SystemExit(f"input CSV not found: {args.data}")
